@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: social_analytics
+      POSTGRES_USER: analytics_user
+      POSTGRES_PASSWORD: analytics_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U analytics_user -d social_analytics"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  app:
+    image: theodorar/social-analytics:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: social_analytics
+      DB_USER: analytics_user
+      DB_PASSWORD: analytics_pass
+      PGHOST: db
+      PGPORT: 5432
+      PGDATABASE: social_analytics
+      PGUSER: analytics_user
+      PGPASSWORD: analytics_pass
+      VK_TOKEN: ${VK_TOKEN:-}
+
+volumes:
+  pg_data:
