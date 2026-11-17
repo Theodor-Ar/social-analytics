@@ -1,15 +1,15 @@
-CREATE TABLE companies (
+CREATE TABLE IF NOT EXISTS companies (
     company_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(200) NOT NULL UNIQUE,
     description TEXT
 );
 
-CREATE TABLE social_networks (
+CREATE TABLE IF NOT EXISTS social_networks (
     social_network_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE accounts (
+CREATE TABLE IF NOT EXISTS accounts (
     account_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     company_id BIGINT NOT NULL REFERENCES companies(company_id),
     social_network_id BIGINT NOT NULL REFERENCES social_networks(social_network_id),
@@ -18,12 +18,12 @@ CREATE TABLE accounts (
     UNIQUE (social_network_id, account_url)
 );
 
-CREATE TABLE topics (
+CREATE TABLE IF NOT EXISTS topics (
     topic_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(150) NOT NULL UNIQUE
 );
 
-CREATE TABLE posts (
+CREATE TABLE IF NOT EXISTS posts (
     post_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     account_id BIGINT NOT NULL REFERENCES accounts(account_id),
     topic_id BIGINT REFERENCES topics(topic_id),
@@ -33,7 +33,7 @@ CREATE TABLE posts (
     UNIQUE (account_id, post_url)
 );
 
-CREATE TABLE activity_metrics (
+CREATE TABLE IF NOT EXISTS activity_metrics (
     metric_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     post_id BIGINT NOT NULL REFERENCES posts(post_id) ON DELETE CASCADE,
     metric_date DATE NOT NULL,
@@ -50,6 +50,6 @@ CREATE TABLE activity_metrics (
 );
 
 
-CREATE INDEX idx_accounts_company ON accounts(company_id) IF NOT EXISTS;
-CREATE INDEX idx_accounts_network ON accounts(social_network_id) IF NOT EXISTS;
-CREATE INDEX idx_posts_topic ON posts(topic_id) IF NOT EXISTS;
+CREATE INDEX IF NOT EXISTS idx_accounts_company ON accounts(company_id);
+CREATE INDEX IF NOT EXISTS idx_accounts_network ON accounts(social_network_id);
+CREATE INDEX IF NOT EXISTS idx_posts_topic ON posts(topic_id);
