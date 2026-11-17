@@ -11,7 +11,6 @@ from psycopg2.extras import execute_values
 import requests
 
 
-# Конфигурация подключения к БД (совпадает с параметрами в install.sh)
 DB_CONFIG = {
     "host": os.getenv("DB_HOST", "localhost"),
     "port": int(os.getenv("DB_PORT", "5432")),
@@ -127,7 +126,6 @@ def transform_vk_data(raw_payload: dict[str, Any]) -> pd.DataFrame:
                 "comments": comments,
                 "shares": shares,
                 "views": views,
-                # Метрики, недоступные в публичном wall.get, маркируются NULL
                 "reach": None,
                 "impressions": None,
                 "saves": None,

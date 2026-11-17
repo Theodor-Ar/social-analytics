@@ -50,6 +50,6 @@ CREATE TABLE activity_metrics (
 );
 
 
-CREATE INDEX idx_accounts_company ON accounts(company_id);
-CREATE INDEX idx_accounts_network ON accounts(social_network_id);
-CREATE INDEX idx_posts_topic ON posts(topic_id);
+CREATE INDEX idx_accounts_company ON accounts(company_id) IF NOT EXISTS;
+CREATE INDEX idx_accounts_network ON accounts(social_network_id) IF NOT EXISTS;
+CREATE INDEX idx_posts_topic ON posts(topic_id) IF NOT EXISTS;

@@ -15,6 +15,7 @@ PGPASSWORD=analytics_pass psql -h localhost -U analytics_user -d social_analytic
 echo "=== Настройка виртуального окружения Python ==="
 python3 -m venv venv
 ./venv/bin/pip install --upgrade pip
-./venv/bin/pip install -r requirements.txt
+./venv/bin/pip install uv
+./venv/bin/uv sync
 
 echo "Установка успешно завершена. Для запуска выполните: ./run.sh"
